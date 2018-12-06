@@ -70,6 +70,21 @@ class Books extends Component {
         this.setState({ editedBook });
     }
 
+    deleteBook(bookID) {
+        axios.delete("/book/" + bookID, serialize({ id: bookID })).then(
+            res => {
+                const newBooks = this.props.books.items.filter(book => {
+                    return book._id !== res.data._id;
+                });
+
+                this.props.dispatch(bookActions.setAll(newBooks));
+            },
+            err => {
+                console.log(err);
+            }
+        );
+    }
+
     render() {
         const books = this.props.books.items;
 
@@ -95,7 +110,7 @@ class Books extends Component {
                                 </button>
                                 <button
                                     className="btn btn-danger"
-                                    onClick={() => this.showModal(book)}
+                                    onClick={() => this.deleteBook(book._id)}
                                 >
                                     delete
                                 </button>
