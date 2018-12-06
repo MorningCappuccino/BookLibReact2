@@ -7,7 +7,9 @@ export function books(state = {}, action) {
                 loading: true
             };
         case bookConstants.GETALL_SUCCESS:
-            return action.books;
+            return {
+                items: action.payload
+            };
         default:
             return state;
     }
