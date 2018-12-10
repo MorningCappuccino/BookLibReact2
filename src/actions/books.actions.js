@@ -1,5 +1,5 @@
 import { axios } from "../helpers";
-import { bookConstants } from "../constants";
+import { bookConstants, alertConstants } from "../constants";
 
 function getAll() {
     return dispatch => {
@@ -20,7 +20,26 @@ function setAll(editedBooks) {
     };
 }
 
+function addBook(book) {
+    return dispatch => {
+        dispatch({ type: bookConstants.ADD_REQUEST });
+
+        axios.post("/book/", book).then(
+            res => {
+                // it's not necessary
+                dispatch({ type: bookConstants.ADD_SUCCESS, payload: res.data.book });
+                dispatch({ type: alertConstants.SUCCESS, payload: 'Book added successful'});
+            },
+            err => {
+                dispatch({ type: bookConstants.ADD_FAILURE });
+                dispatch({ type: alertConstants.FAILURE, payload: err.toString() });
+            }
+        );
+    };
+}
+
 export const bookActions = {
     getAll,
-    setAll
+    setAll,
+    addBook
 };

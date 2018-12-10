@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import { Router, Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Alert } from 'reactstrap';
 
 import { history } from '../helpers';
 import { Books } from '../components/Books/Books.jsx';
 import { AddBook } from '../components/AddBook/AddBook.jsx';
+import { alertConstants } from "../constants";
 
 class App extends Component {
     constructor(props) {
         super(props);
+
+        history.listen(() => {
+            this.props.dispatch({ type: alertConstants.CLEAR });
+        });
     }
 
     render() {
-        // console.log(this.props);
+        // console.log('render: ', this.props);
+        const { alert } = this.props;
+
         return (
 
             <Router history={history}>
@@ -22,7 +30,7 @@ class App extends Component {
                         <button className="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
                                 aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
+                            <span className="navbar-toggler-icon"/>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav">
@@ -35,9 +43,10 @@ class App extends Component {
                             </div>
                         </div>
                     </nav>
+                    {alert.message && <Alert color={alert.type} className="mb-0">{alert.message}</Alert>}
                     <Switch>
                         <Route exact path="/" component={Books} />
-                        <Route path="/add" component={AddBook} />
+                        <Route exact path="/add" component={AddBook} />
                     </Switch>
                 </div>
             </Router>
@@ -46,9 +55,9 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-    const { books } = state;
+    const { alert } = state;
     return {
-        books
+        alert
     };
 }
 

@@ -15,6 +15,7 @@ import serialize from "form-serialize";
 
 import { bookActions } from "../../actions";
 import { axios } from "../../helpers";
+import {bookConstants} from "../../constants";
 
 class Books extends Component {
     constructor(props) {
@@ -55,7 +56,8 @@ class Books extends Component {
                     }
                 });
 
-                this.props.dispatch(bookActions.setAll(updatedBooks));
+                // this.props.dispatch(bookActions.setAll(updatedBooks));
+                this.props.dispatch({ type: bookConstants.GETALL_SUCCESS, payload: updatedBooks });
                 this.setState({ modal: !this.state.modal });
             },
             err => {

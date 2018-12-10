@@ -10,6 +10,18 @@ export function books(state = {}, action) {
             return {
                 items: action.payload
             };
+        case bookConstants.ADD_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+        case bookConstants.ADD_SUCCESS:
+            return {
+                ...state,
+                items: [...state.items, action.payload]
+            };
+        case bookConstants.ADD_FAILURE:
+            return {};
         default:
             return state;
     }
