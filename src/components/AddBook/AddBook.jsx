@@ -29,10 +29,14 @@ class AddBook extends Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit() {
+    handleSubmit(e) {
         const form = document.querySelector("#book-add");
 
-        this.props.dispatch(bookActions.addBook(serialize(form)));
+        if (this.state.title) {
+            e.preventDefault();
+            this.props.dispatch(bookActions.addBook(serialize(form)));
+        }
+
     }
 
     render() {
@@ -65,10 +69,10 @@ class AddBook extends Component {
                             onChange={this.handleChange}
                         />
                     </FormGroup>
+                    <Button type="submit" color="success" onClick={this.handleSubmit}>
+                        Submit
+                    </Button>
                 </Form>
-                <Button color="success" onClick={this.handleSubmit}>
-                    Submit
-                </Button>
             </div>
         );
     }
